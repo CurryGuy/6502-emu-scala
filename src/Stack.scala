@@ -5,7 +5,7 @@ class Stack(val mem: Memory, val top: Int) {
   val sp = Register(top, "SP", 16)
 
   def reset(): Unit = {
-    sp := 0
+    sp := top
   }
 
   def pushByte(value: Int): Unit = {

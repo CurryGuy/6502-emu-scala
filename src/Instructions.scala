@@ -159,7 +159,122 @@ class Instructions(cpu: Cpu) {
     Instruction(0xBD, "LDA", LDA, AddressingMode.AbsoluteX, 4),
     Instruction(0xB9, "LDA", LDA, AddressingMode.AbsoluteY, 4),
     Instruction(0xA1, "LDA", LDA, AddressingMode.IndexedIndirect, 6),
-    Instruction(0xB1, "LDA", LDA, AddressingMode.IndirectIndexed, 5)
+    Instruction(0xB1, "LDA", LDA, AddressingMode.IndirectIndexed, 5),
+
+    /* LDX */
+    Instruction(0xA2, "LDX", LDX, AddressingMode.Immediate, 2),
+    Instruction(0xA6, "LDX", LDX, AddressingMode.ZeroPage, 3),
+    Instruction(0xB6, "LDX", LDX, AddressingMode.ZeroPageY, 4),
+    Instruction(0xAE, "LDX", LDX, AddressingMode.Absolute, 4),
+    Instruction(0xBE, "LDX", LDX, AddressingMode.AbsoluteY, 4),
+
+    /* LDY */
+    Instruction(0xA0, "LDY", LDY, AddressingMode.Immediate, 2),
+    Instruction(0xA4, "LDY", LDY, AddressingMode.ZeroPage, 3),
+    Instruction(0xB4, "LDY", LDY, AddressingMode.ZeroPageX, 4),
+    Instruction(0xAC, "LDY", LDY, AddressingMode.Absolute, 4),
+    Instruction(0xBC, "LDY", LDY, AddressingMode.AbsoluteX, 4),
+
+    /* LSR */
+    Instruction(0x4A, "LSR", LSR, AddressingMode.Accumulator, 2),
+    Instruction(0x46, "LSR", LSR, AddressingMode.ZeroPage, 5),
+    Instruction(0x56, "LSR", LSR, AddressingMode.ZeroPageX, 6),
+    Instruction(0x4E, "LSR", LSR, AddressingMode.Absolute, 6),
+    Instruction(0x5E, "LSR", LSR, AddressingMode.AbsoluteX, 7),
+
+    /* NOP */
+    Instruction(0xEA, "NOP", NOP, AddressingMode.Implied, 2),
+
+    /* ORA */
+    Instruction(0x09, "ORA", ORA, AddressingMode.Immediate, 2),
+    Instruction(0x05, "ORA", ORA, AddressingMode.ZeroPage, 3),
+    Instruction(0x15, "ORA", ORA, AddressingMode.ZeroPageX, 4),
+    Instruction(0x0D, "ORA", ORA, AddressingMode.Absolute, 4),
+    Instruction(0x1D, "ORA", ORA, AddressingMode.AbsoluteX, 4),
+    Instruction(0x19, "ORA", ORA, AddressingMode.AbsoluteY, 4),
+    Instruction(0x01, "ORA", ORA, AddressingMode.IndexedIndirect, 6),
+    Instruction(0x11, "ORA", ORA, AddressingMode.IndirectIndexed, 5),
+
+    /* PHA */
+    Instruction(0x48, "PHA", PHA, AddressingMode.Implied, 3),
+
+    /* PHP */
+    Instruction(0x08, "PHP", PHP, AddressingMode.Implied, 3),
+
+    /* PLA */
+    Instruction(0x68, "PLA", PLA, AddressingMode.Implied, 4),
+
+    /* PLP */
+    Instruction(0x28, "PLP", PLP, AddressingMode.Implied, 4),
+
+    /* ROR */
+    Instruction(0x6A, "ROR", ROR, AddressingMode.Accumulator, 2),
+    Instruction(0x66, "ROR", ROR, AddressingMode.ZeroPage, 5),
+    Instruction(0x76, "ROR", ROR, AddressingMode.ZeroPageX, 6),
+    Instruction(0x6E, "ROR", ROR, AddressingMode.Absolute, 6),
+    Instruction(0x7E, "ROR", ROR, AddressingMode.AbsoluteX, 7),
+
+    /* RTI */
+    Instruction(0x40, "RTI", RTI, AddressingMode.Implied, 6),
+
+    /* RTS */
+    Instruction(0x60, "RTS", RTS, AddressingMode.Implied, 6),
+
+    /* SBC */
+    Instruction(0xE9, "SBC", SBC, AddressingMode.Immediate, 2),
+    Instruction(0xE5, "SBC", SBC, AddressingMode.ZeroPage, 3),
+    Instruction(0xF5, "SBC", SBC, AddressingMode.ZeroPageX, 4),
+    Instruction(0xED, "SBC", SBC, AddressingMode.Absolute, 4),
+    Instruction(0xFD, "SBC", SBC, AddressingMode.AbsoluteX, 4),
+    Instruction(0xF9, "SBC", SBC, AddressingMode.AbsoluteY, 4),
+    Instruction(0xE1, "SBC", SBC, AddressingMode.IndexedIndirect, 6),
+    Instruction(0xF1, "SBC", SBC, AddressingMode.IndirectIndexed, 5),
+
+    /* SEC */
+    Instruction(0x38, "SEC", SEC, AddressingMode.Implied, 2),
+
+    /* SED */
+    Instruction(0xF8, "SED", SED, AddressingMode.Implied, 2),
+
+    /* SEI */
+    Instruction(0x78, "SEI", SEI, AddressingMode.Implied, 2),
+
+    /* STA */
+    Instruction(0x85, "STA", STA, AddressingMode.ZeroPage, 3),
+    Instruction(0x95, "STA", STA, AddressingMode.ZeroPageX, 4),
+    Instruction(0x8D, "STA", STA, AddressingMode.Absolute, 4),
+    Instruction(0x9D, "STA", STA, AddressingMode.AbsoluteX, 5),
+    Instruction(0x99, "STA", STA, AddressingMode.AbsoluteY, 5),
+    Instruction(0x81, "STA", STA, AddressingMode.IndexedIndirect, 6),
+    Instruction(0x91, "STA", STA, AddressingMode.IndirectIndexed, 6),
+
+    /* STX */
+    Instruction(0x86, "STX", STX, AddressingMode.ZeroPage, 3),
+    Instruction(0x96, "STX", STX, AddressingMode.ZeroPageY, 4),
+    Instruction(0x8E, "STX", STX, AddressingMode.Absolute, 4),
+
+    /* STY */
+    Instruction(0x84, "STY", STY, AddressingMode.ZeroPage, 3),
+    Instruction(0x94, "STY", STY, AddressingMode.ZeroPageX, 4),
+    Instruction(0x8C, "STY", STY, AddressingMode.Absolute, 4),
+
+    /* TAX */
+    Instruction(0xAA, "TAX", TAX, AddressingMode.Implied, 2),
+
+    /* TAY */
+    Instruction(0xA8, "TAY", TAY, AddressingMode.Implied, 2),
+
+    /* TSX */
+    Instruction(0xBA, "TSX", TSX, AddressingMode.Implied, 2),
+
+    /* TXA */
+    Instruction(0x8A, "TXA", TXA, AddressingMode.Implied, 2),
+
+    /* TXS */
+    Instruction(0x9A, "TXS", TXS, AddressingMode.Implied, 2),
+
+    /* TYA */
+    Instruction(0x98, "TYA", TYA, AddressingMode.Implied, 2)
   )
 
   def ADC(mode: AddressingMode): Unit = {
@@ -384,5 +499,203 @@ class Instructions(cpu: Cpu) {
 
     cpu.setFlag(CpuFlag.Zero, data == 0)
     cpu.setFlag(CpuFlag.Negative, checkNegative(data))
+  }
+
+  def LDX(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    val data = cpu.readOperand(op)
+
+    cpu.X := data
+
+    cpu.setFlag(CpuFlag.Zero, data == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(data))
+  }
+
+  def LDY(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    val data = cpu.readOperand(op)
+
+    cpu.Y := data
+
+    cpu.setFlag(CpuFlag.Zero, data == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(data))
+  }
+
+  def LSR(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    val data = cpu.readOperand(op)
+
+    val result = data >>> 1
+
+    cpu.writeOperand(op, result)
+
+    cpu.setFlag(CpuFlag.Carry, (data & 0x1) != 0)
+    cpu.setFlag(CpuFlag.Zero, result == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(result))
+  }
+
+  def NOP(mode: AddressingMode): Unit = {
+  }
+
+  def ORA(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    val data = cpu.readOperand(op)
+
+    val result = data | cpu.A
+
+    cpu.A := result
+
+    cpu.setFlag(CpuFlag.Zero, result == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(result))
+  }
+
+  def PHA(mode: AddressingMode): Unit = {
+    cpu.stack.pushByte(cpu.A)
+  }
+
+  def PHP(mode: AddressingMode): Unit = {
+    cpu.stack.pushByte(cpu.P)
+  }
+
+  def PLA(mode: AddressingMode): Unit = {
+    val a = cpu.stack.popByte()
+
+    cpu.A := a
+
+    cpu.setFlag(CpuFlag.Zero, a == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(a))
+  }
+
+  def PLP(mode: AddressingMode): Unit = {
+    val p = cpu.stack.popByte()
+    cpu.P := p
+  }
+
+  def ROL(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    val data = cpu.readOperand(op)
+
+    var result = data << 1
+
+    if(cpu.getFlag(CpuFlag.Carry))
+      result |= 0x01
+    else
+      result &= ~0x01
+
+    cpu.writeOperand(op, result)
+
+    cpu.setFlag(CpuFlag.Carry, checkNegative(data))
+    cpu.setFlag(CpuFlag.Zero, cpu.A == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(result))
+  }
+
+  def ROR(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    val data = cpu.readOperand(op)
+
+    var result = data >> 1
+
+    if(cpu.getFlag(CpuFlag.Carry))
+      result |= 0x80
+    else
+      result &= ~0x80
+
+    cpu.writeOperand(op, result)
+
+    cpu.setFlag(CpuFlag.Carry, (data & 0x01) != 0)
+    cpu.setFlag(CpuFlag.Zero, cpu.A == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(result))
+  }
+
+  def RTI(mode: AddressingMode): Unit = {
+    cpu.P := cpu.stack.popByte()
+    cpu.PC := cpu.stack.popWord()
+  }
+
+  def RTS(mode: AddressingMode): Unit = {
+    cpu.PC := cpu.stack.popWord()
+  }
+
+  def SBC(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    val data = cpu.readOperand(op)
+
+    var result = cpu.A - data
+
+    if(!cpu.getFlag(CpuFlag.Carry))
+      result -= 1
+
+    cpu.A := result
+
+    cpu.setFlag(CpuFlag.Carry, result > 0xFFFF)
+    cpu.setFlag(CpuFlag.Zero, cpu.A == 0)
+    cpu.setFlag(CpuFlag.Overflow, checkOverflow(cpu.A, data))
+    cpu.setFlag(CpuFlag.Negative, checkNegative(result))
+  }
+
+  def SEC(mode: AddressingMode): Unit = {
+    cpu.setFlag(CpuFlag.Carry, set = true)
+  }
+
+  def SED(mode: AddressingMode): Unit = {
+    cpu.setFlag(CpuFlag.Decimal, set = true)
+  }
+
+  def SEI(mode: AddressingMode): Unit = {
+    cpu.setFlag(CpuFlag.Interrupt, set = true)
+  }
+
+  def STA(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    cpu.writeOperand(op, cpu.A)
+  }
+
+  def STX(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    cpu.writeOperand(op, cpu.X)
+  }
+
+  def STY(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    cpu.writeOperand(op, cpu.Y)
+  }
+
+  def TAX(mode: AddressingMode): Unit = {
+    cpu.X := cpu.A
+
+    cpu.setFlag(CpuFlag.Zero, cpu.X == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(cpu.X))
+  }
+
+  def TAY(mode: AddressingMode): Unit = {
+    cpu.Y := cpu.A
+
+    cpu.setFlag(CpuFlag.Zero, cpu.Y == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(cpu.Y))
+  }
+
+  def TSX(mode: AddressingMode): Unit = {
+    cpu.X := cpu.stack.sp
+
+    cpu.setFlag(CpuFlag.Zero, cpu.X == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(cpu.X))
+  }
+
+  def TXA(mode: AddressingMode): Unit = {
+    cpu.A := cpu.X
+
+    cpu.setFlag(CpuFlag.Zero, cpu.A == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(cpu.A))
+  }
+
+  def TXS(mode: AddressingMode): Unit = {
+    cpu.stack.sp := cpu.X
+  }
+
+  def TYA(mode: AddressingMode): Unit = {
+    cpu.A := cpu.Y
+
+    cpu.setFlag(CpuFlag.Zero, cpu.A == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(cpu.A))
   }
 }
