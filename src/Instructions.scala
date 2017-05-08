@@ -146,7 +146,20 @@ class Instructions(cpu: Cpu) {
 
     /* JMP */
     Instruction(0x4C, "JMP", JMP, AddressingMode.Absolute, 3),
-    Instruction(0x6C, "JMP", JMP, AddressingMode.Indirect, 5)
+    Instruction(0x6C, "JMP", JMP, AddressingMode.Indirect, 5),
+
+    /* JSR */
+    Instruction(0x20, "JSR", JSR, AddressingMode.Absolute, 6),
+
+    /* LDA */
+    Instruction(0xA9, "LDA", LDA, AddressingMode.Immediate, 2),
+    Instruction(0xA5, "LDA", LDA, AddressingMode.ZeroPage, 3),
+    Instruction(0xB5, "LDA", LDA, AddressingMode.ZeroPageX, 4),
+    Instruction(0xAD, "LDA", LDA, AddressingMode.Absolute, 4),
+    Instruction(0xBD, "LDA", LDA, AddressingMode.AbsoluteX, 4),
+    Instruction(0xB9, "LDA", LDA, AddressingMode.AbsoluteY, 4),
+    Instruction(0xA1, "LDA", LDA, AddressingMode.IndexedIndirect, 6),
+    Instruction(0xB1, "LDA", LDA, AddressingMode.IndirectIndexed, 5)
   )
 
   def ADC(mode: AddressingMode): Unit = {
@@ -356,5 +369,20 @@ class Instructions(cpu: Cpu) {
     cpu.PC := op.address
   }
 
+  def JSR(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
 
+    cpu.stack.pushWord(cpu.PC)
+    cpu.PC := op.address
+  }
+
+  def LDA(mode: AddressingMode): Unit = {
+    val op = cpu.fetchOperand(mode)
+    val data = cpu.readOperand(op)
+
+    cpu.A := data
+
+    cpu.setFlag(CpuFlag.Zero, data == 0)
+    cpu.setFlag(CpuFlag.Negative, checkNegative(data))
+  }
 }

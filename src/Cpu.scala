@@ -18,7 +18,7 @@ class Cpu(val mem: Memory, programStart: Int) {
 
   private var _cycles = 0
 
-  def cycles = _cycles
+  def cycles : Int = _cycles
 
   def getFlag(flag: CpuFlag): Boolean = P.getBit(flag.id)
   def setFlag(flag: CpuFlag, set: Boolean): Unit = P.setBit(flag.id, set)
@@ -50,11 +50,11 @@ class Cpu(val mem: Memory, programStart: Int) {
 
   def fetchOperand(mode: AddressingMode): Operand = mode match {
     case AddressingMode.Accumulator => Operand(accumulator = true)
-    case AddressingMode.Immediate => {
+    case AddressingMode.Immediate =>
       val op = Operand(address = PC)
       PC += 1
       op
-    }
+
     case AddressingMode.ZeroPage =>
       val addr = mem.readByte(PC)
       PC += 1
@@ -125,10 +125,10 @@ class Cpu(val mem: Memory, programStart: Int) {
 
   def readOperand(operand: Operand): Int = {
     if(operand.accumulator)
-      A
+      A.toInt
     else if(operand.address >= 0)
       mem.readByte(operand.address)
-    0
+    else 0
   }
 
   def writeOperand(operand: Operand, data: Int): Unit = {
