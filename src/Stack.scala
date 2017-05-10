@@ -1,32 +1,35 @@
 /**
   * Created by fcusumano on 5/8/17.
   */
-class Stack(val mem: Memory, val top: Int) {
-  val sp = Register(top, "SP", 16)
+class Stack(val mem: Ram) {
+  val SP = Register(Stack.SpStart, "SP", 8)
 
   def reset(): Unit = {
-    sp := top
+    SP := Stack.SpStart
   }
 
   def pushByte(value: Int): Unit = {
-    mem.writeByte(sp, value)
-    sp -= 1
+    mem.writeByte(Stack.Top | SP, value)
+    SP -= 1
   }
 
   def pushWord(value: Int): Unit = {
-    mem.writeWord(sp, value)
-    sp -= 2
+    mem.writeWord(Stack.Top | SP, value)
+    SP -= 2
   }
 
   def popByte(): Int = {
-    val byte = mem.readByte(sp)
-    sp += 1
-    byte
+    SP += 1
+    mem.readByte(SP)
   }
 
   def popWord(): Int = {
-    val word = mem.readWord(sp)
-    sp += 2
-    word
+    SP += 2
+    mem.readWord(SP)
   }
+}
+
+object Stack {
+  val Top = 0x0100
+  val SpStart = 0xFD
 }

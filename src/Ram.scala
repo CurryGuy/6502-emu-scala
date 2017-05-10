@@ -1,8 +1,8 @@
 /**
   * Created by fcusumano on 5/8/17.
   */
-class Memory(val size: Int) {
-  private val bytes = new Array[Int](size)
+class Ram() {
+  private val bytes = new Array[Int](Ram.Size)
 
   def readByte(position: Int): Int = {
     bytes(position) & 0xFF
@@ -41,4 +41,8 @@ class Memory(val size: Int) {
     }
     result
   }
+}
+
+object Ram {
+  val Size = 0x10000
 }

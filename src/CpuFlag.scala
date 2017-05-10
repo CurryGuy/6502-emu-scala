@@ -9,6 +9,7 @@ object CpuFlag extends Enumeration {
   val Interrupt = Value(1 << 2)
   val Decimal = Value(1 << 3)
   val Break = Value(1 << 4)
-  val Overflow = Value(1 << 5)
-  val Negative = Value(1 << 6)
+  val Unknown = Value(1 << 5)
+  val Overflow = Value(1 << 6)
+  val Negative = Value(1 << 7)
 }

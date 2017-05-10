@@ -8,14 +8,21 @@ class Instructions(cpu: Cpu) {
     table.find(_.opcode == opcode)
   }
 
-  private def checkOverflow(a: Int, b: Int): Boolean = false
+  private def checkOverflow(a: Int, b: Int, result: Int): Boolean = {
+    checkNegative(~(a ^ b) & (a ^ result))
+  }
+
   private def checkNegative(value: Int): Boolean = (value & 0x80) != 0
 
   private def branch(mode: AddressingMode, condition: Boolean): Unit = {
     val op = cpu.fetchOperand(mode)
     if(condition) {
+      if(((cpu.PC + op.address) & 0xFF00) != (cpu.PC & 0xFF00)) {
+        cpu.incrementCycles(1)
+      }
+
       cpu.PC += op.address
-      cpu.incrementCycles(if((cpu.PC.toInt & 0xFF00) != 0) 2 else 1)
+      cpu.incrementCycles(1)
     }
   }
 
@@ -287,8 +294,8 @@ class Instructions(cpu: Cpu) {
     cpu.A := result
 
     cpu.setFlag(CpuFlag.Carry, result > 0xFF)
-    cpu.setFlag(CpuFlag.Zero, result == 0)
-    cpu.setFlag(CpuFlag.Overflow, checkOverflow(data, a))
+    cpu.setFlag(CpuFlag.Zero, cpu.A == 0)
+    cpu.setFlag(CpuFlag.Overflow, checkOverflow(a, data, result))
     cpu.setFlag(CpuFlag.Negative, checkNegative(result))
   }
 
@@ -629,7 +636,7 @@ class Instructions(cpu: Cpu) {
 
     cpu.setFlag(CpuFlag.Carry, result > 0xFFFF)
     cpu.setFlag(CpuFlag.Zero, cpu.A == 0)
-    cpu.setFlag(CpuFlag.Overflow, checkOverflow(cpu.A, data))
+    cpu.setFlag(CpuFlag.Overflow, checkOverflow(cpu.A, data, result))
     cpu.setFlag(CpuFlag.Negative, checkNegative(result))
   }
 
@@ -675,7 +682,7 @@ class Instructions(cpu: Cpu) {
   }
 
   def TSX(mode: AddressingMode): Unit = {
-    cpu.X := cpu.stack.sp
+    cpu.X := cpu.stack.SP
 
     cpu.setFlag(CpuFlag.Zero, cpu.X == 0)
     cpu.setFlag(CpuFlag.Negative, checkNegative(cpu.X))
@@ -689,7 +696,7 @@ class Instructions(cpu: Cpu) {
   }
 
   def TXS(mode: AddressingMode): Unit = {
-    cpu.stack.sp := cpu.X
+    cpu.stack.SP := cpu.X
   }
 
   def TYA(mode: AddressingMode): Unit = {

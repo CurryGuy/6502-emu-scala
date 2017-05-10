@@ -1,22 +1,22 @@
 import AddressingMode.AddressingMode
 import CpuFlag.CpuFlag
+import InterruptType.InterruptType
 
 /**
   * Created by fcusumano on 5/8/17.
   */
-class Cpu(val mem: Memory, programStart: Int) {
-  val StackTop = 0x01FF
-
-  val stack = new Stack(mem, StackTop)
+class Cpu(val mem: Ram) {
+  val stack = new Stack(mem)
   val instructions = new Instructions(this)
 
   val A  = Register(0, "A", 8)
   val X  = Register(0, "X", 8)
   val Y  = Register(0, "Y", 8)
   val P  = Register(0, "P", 8)
-  val PC = Register(programStart, "PC", 16)
+  val PC = Register(0, "PC", 16)
 
   private var _cycles = 0
+  private var _interruptType = InterruptType.None
 
   def cycles : Int = _cycles
 
@@ -24,28 +24,41 @@ class Cpu(val mem: Memory, programStart: Int) {
   def setFlag(flag: CpuFlag, set: Boolean): Unit = P.setBit(flag.id, set)
   def incrementCycles(amount: Int): Unit = _cycles += amount
 
+  def handleInterrupts(): Unit = {
+  }
+
+  def triggerInterrupt(interrupt: InterruptType): Unit = {
+  }
+
   def reset(): Unit = {
+    _cycles = 0
     A := 0
     X := 0
     Y := 0
-    P := 0
+    P := 0x04
 
-    PC := programStart
+    PC := 0
 
     stack.reset()
     mem.clear()
+
+    triggerInterrupt(InterruptType.Reset)
   }
 
   def step(): Unit = {
+    handleInterrupts()
+
     val opcode = mem.readByte(PC)
     PC += 1
 
     val instruction = instructions.getInstruction(opcode)
 
-    if(instruction.isDefined)
-      instruction.get.run()
-    else
+    if(instruction.isDefined) {
+      val instructionCycles = instruction.get.run()
+      incrementCycles(instructionCycles)
+    } else {
       throw new Exception(s"Invalid opcode: $opcode")
+    }
   }
 
   def fetchOperand(mode: AddressingMode): Operand = mode match {
@@ -81,20 +94,26 @@ class Cpu(val mem: Memory, programStart: Int) {
       Operand(address = addr)
 
     case AddressingMode.AbsoluteX =>
-      var addr = mem.readWord(PC) + X
-      if(addr > 0xFFFF) {
+      var addr = mem.readWord(PC)
+
+      if((addr & 0xFF00) != ((addr + X) & 0xFF00)) {
         incrementCycles(1)
-        addr &= 0xFFFF
       }
+
+      addr = (addr + X) & 0xFFFF
+
       PC += 2
       Operand(address = addr)
 
     case AddressingMode.AbsoluteY =>
-      var addr = mem.readWord(PC) + Y
-      if(addr > 0xFFFF) {
+      var addr = mem.readWord(PC)
+
+      if((addr & 0xFF00) != ((addr + Y) & 0xFF00)) {
         incrementCycles(1)
-        addr &= 0xFFFF
       }
+
+      addr = (addr + Y) & 0xFF00
+
       PC += 2
       Operand(address = addr)
 
@@ -113,11 +132,14 @@ class Cpu(val mem: Memory, programStart: Int) {
     case AddressingMode.IndirectIndexed =>
       val zeroPageAddr = mem.readByte(PC)
       PC += 1
-      var addr = mem.readWord(zeroPageAddr) + Y
-      if(addr > 0xFFFF) {
+      var addr = mem.readWord(zeroPageAddr)
+
+      if((addr & 0xFF00) != ((addr + Y) & 0xFF00)) {
         incrementCycles(1)
-        addr &= 0xFFFF
       }
+
+      addr = (addr + Y) & 0xFFFF
+
       Operand(address = addr)
 
     case _ => Operand(address = -1)
@@ -139,6 +161,6 @@ class Cpu(val mem: Memory, programStart: Int) {
   }
 
   def mkString : String = {
-    s"${stack.sp} $PC $A $X $Y"
+    s"${stack.SP} $PC $A $X $Y"
   }
 }
