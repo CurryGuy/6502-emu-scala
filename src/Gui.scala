@@ -2,6 +2,9 @@ import java.awt._
 import java.awt.event.{ActionEvent, ActionListener, KeyEvent, KeyListener}
 import javax.swing.{JFrame, JPanel, Timer}
 
+import com.nanni.nes.cpu.AddressingMode
+import com.nanni.nes.{Nes, Ppu}
+
 /**
   * Created by fcusumano on 5/9/17.
   */
@@ -50,7 +53,7 @@ object Gui extends App {
     override def keyReleased(keyEvent: KeyEvent): Unit = {}
   }
 
-  val frame = new JFrame("Nes Emulator")
+  val frame = new JFrame("com.nanni.nes.Nes Emulator")
   val canvas = new Canvas
 
   val ScalingFactor = 1
@@ -65,6 +68,20 @@ object Gui extends App {
   frame.pack()
   frame.setVisible(true)
 
+  val nes = new Nes
+  val asm = new InstructionsWriter(nes.cpu)
+
+  asm.seek(0x3000)
+
+  asm += "INX"
+  asm += ("LDA", AddressingMode.Immediate)
+  asm >> 0x10
+  asm += ("JMP", AddressingMode.Absolute)
+  asm >>> 0x3000
+
   while(true) {
+    println(nes.cpu.X)
+    println(nes.cpu.A)
+    nes.cpu.step()
   }
 }

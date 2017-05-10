@@ -1,11 +1,22 @@
-import AddressingMode.AddressingMode
+package com.nanni.nes.cpu
+
+import com.nanni.nes.cpu.AddressingMode.AddressingMode
 
 /**
   * Created by fcusumano on 5/8/17.
   */
-class Instructions(cpu: Cpu) {
+class Instructions(private val cpu: Cpu) {
   def getInstruction(opcode: Int): Option[Instruction] = {
     table.find(_.opcode == opcode)
+  }
+
+  def getInstruction(name: String, mode: AddressingMode): Option[Instruction] = {
+    table.find(i => i.name == name && i.mode == mode)
+  }
+
+  def getOpcode(name: String, mode: AddressingMode): Option[Int] = getInstruction(name, mode) match {
+    case Some(i) => Some(i.opcode)
+    case None => None
   }
 
   private def checkOverflow(a: Int, b: Int, result: Int): Boolean = {

@@ -1,12 +1,15 @@
-import AddressingMode.AddressingMode
-import CpuFlag.CpuFlag
-import InterruptType.InterruptType
+package com.nanni.nes.cpu
+
+import com.nanni.nes.Ram
+import com.nanni.nes.Stack
+import com.nanni.nes.cpu.AddressingMode.AddressingMode
+import com.nanni.nes.cpu.CpuFlag.CpuFlag
+import com.nanni.nes.cpu.InterruptType.InterruptType
 
 /**
   * Created by fcusumano on 5/8/17.
   */
-class Cpu(val mem: Ram) {
-  val stack = new Stack(mem)
+class Cpu(val mem: Ram, val stack: Stack) {
   val instructions = new Instructions(this)
 
   val A  = Register(0, "A", 8)
@@ -16,7 +19,6 @@ class Cpu(val mem: Ram) {
   val PC = Register(0, "PC", 16)
 
   private var _cycles = 0
-  private var _interruptType = InterruptType.None
 
   def cycles : Int = _cycles
 
@@ -24,10 +26,10 @@ class Cpu(val mem: Ram) {
   def setFlag(flag: CpuFlag, set: Boolean): Unit = P.setBit(flag.id, set)
   def incrementCycles(amount: Int): Unit = _cycles += amount
 
-  def handleInterrupts(): Unit = {
-  }
-
   def triggerInterrupt(interrupt: InterruptType): Unit = {
+    if(interrupt == InterruptType.Reset) {
+      PC := 0x3000
+    }
   }
 
   def reset(): Unit = {
@@ -39,15 +41,10 @@ class Cpu(val mem: Ram) {
 
     PC := 0
 
-    stack.reset()
-    mem.clear()
-
     triggerInterrupt(InterruptType.Reset)
   }
 
   def step(): Unit = {
-    handleInterrupts()
-
     val opcode = mem.readByte(PC)
     PC += 1
 

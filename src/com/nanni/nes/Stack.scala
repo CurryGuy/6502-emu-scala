@@ -1,3 +1,7 @@
+package com.nanni.nes
+
+import com.nanni.nes.cpu.Register
+
 /**
   * Created by fcusumano on 5/8/17.
   */

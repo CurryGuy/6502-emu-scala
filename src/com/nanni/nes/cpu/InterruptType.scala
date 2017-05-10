@@ -1,3 +1,5 @@
+package com.nanni.nes.cpu
+
 /**
   * Created by fcusumano on 5/9/17.
   */

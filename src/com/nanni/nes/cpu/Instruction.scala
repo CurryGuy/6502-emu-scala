@@ -1,4 +1,6 @@
-import AddressingMode.AddressingMode
+package com.nanni.nes.cpu
+
+import com.nanni.nes.cpu.AddressingMode.AddressingMode
 
 /**
   * Created by fcusumano on 5/8/17.

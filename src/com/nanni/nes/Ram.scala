@@ -1,3 +1,5 @@
+package com.nanni.nes
+
 /**
   * Created by fcusumano on 5/8/17.
   */
