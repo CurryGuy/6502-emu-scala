@@ -15,6 +15,19 @@ class Instruction(val opcode: Int,
       function(mode)
     cycles
   }
+
+  val operandSize: Int = mode match {
+    case AddressingMode.Implied |
+         AddressingMode.Accumulator => 0
+    case AddressingMode.Immediate |
+      AddressingMode.ZeroPage |
+      AddressingMode.ZeroPageX |
+      AddressingMode.ZeroPageY |
+      AddressingMode.Relative => 1
+    case _ => 2
+  }
+
+  val size: Int = operandSize + 1
 }
 
 object Instruction {

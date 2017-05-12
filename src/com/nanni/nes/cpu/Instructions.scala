@@ -316,7 +316,7 @@ class Instructions(private val cpu: Cpu) {
 
     cpu.A := result
 
-    cpu.setFlag(CpuFlag.Zero, result == 0)
+    cpu.setFlag(CpuFlag.Zero, cpu.A == 0)
     cpu.setFlag(CpuFlag.Negative, checkNegative(result))
   }
 

@@ -1,4 +1,4 @@
-package com.nanni.nes
+package com.nanni.nes.ppu
 
 /**
   * Created by fcusumano on 5/9/17.

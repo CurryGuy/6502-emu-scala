@@ -1,9 +1,11 @@
-import java.awt._
+import java.awt.{Color, Dimension, Graphics, Image}
 import java.awt.event.{ActionEvent, ActionListener, KeyEvent, KeyListener}
+import java.io.{File, FileInputStream}
 import javax.swing.{JFrame, JPanel, Timer}
 
 import com.nanni.nes.cpu.AddressingMode
-import com.nanni.nes.{Nes, Ppu}
+import com.nanni.nes.{Cartridge, Nes}
+import com.nanni.nes.ppu.Ppu
 
 /**
   * Created by fcusumano on 5/9/17.
@@ -53,7 +55,7 @@ object Gui extends App {
     override def keyReleased(keyEvent: KeyEvent): Unit = {}
   }
 
-  val frame = new JFrame("com.nanni.nes.Nes Emulator")
+  val frame = new JFrame("Nes Emulator")
   val canvas = new Canvas
 
   val ScalingFactor = 1
@@ -68,8 +70,17 @@ object Gui extends App {
   frame.pack()
   frame.setVisible(true)
 
+  val stream = new FileInputStream(new File("./roms/matrixv006b.nes"))
+  val bytes = new Array[Byte](stream.available())
+  stream.read(bytes)
+  stream.close()
+
+  val cart = new Cartridge(bytes)
+
   val nes = new Nes
   val asm = new InstructionsWriter(nes.cpu)
+
+  println(cart.disassembly(nes.cpu.instructions))
 
   asm.seek(0x3000)
 
@@ -80,8 +91,6 @@ object Gui extends App {
   asm >>> 0x3000
 
   while(true) {
-    println(nes.cpu.X)
-    println(nes.cpu.A)
     nes.cpu.step()
   }
 }
