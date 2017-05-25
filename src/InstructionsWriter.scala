@@ -29,7 +29,7 @@ class InstructionsWriter(cpu: Cpu) {
     writeOffset += 2
   }
 
-  def +=(name: String, mode: AddressingMode = AddressingMode.Implied): Unit = writeInstruction(name, mode)
-  def >>(value: Int): Unit = writeByte(value)
-  def >>>(value: Int): Unit = writeWord(value)
+  def !(name: String, mode: AddressingMode = AddressingMode.Implied): Unit = writeInstruction(name, mode)
+  def <<(value: Int): Unit = writeByte(value)
+  def <<<(value: Int): Unit = writeWord(value)
 }

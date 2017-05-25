@@ -84,13 +84,15 @@ object Gui extends App {
 
   asm.seek(0x3000)
 
-  asm += "INX"
-  asm += ("LDA", AddressingMode.Immediate)
-  asm >> 0x10
-  asm += ("JMP", AddressingMode.Absolute)
-  asm >>> 0x3000
+  asm ! "INX"
+  asm ! ("LDA", AddressingMode.Immediate)
+  asm << 0x10
+  asm ! ("JMP", AddressingMode.Absolute)
+  asm <<< 0x3000
 
   while(true) {
     nes.cpu.step()
+    println(nes.cpu.X)
+    println(nes.cpu.A)
   }
 }

@@ -5,10 +5,14 @@ import com.nanni.nes.cpu.Register
 /**
   * Created by fcusumano on 5/8/17.
   */
-class Stack(val mem: Ram) {
+class Stack(val mem: Memory) {
   val SP = Register(Stack.SpStart, "SP", 8)
 
   def reset(): Unit = {
+    SP := Stack.SpStart
+  }
+
+  def init(): Unit = {
     SP := Stack.SpStart
   }
 

@@ -5,6 +5,10 @@ package com.nanni.nes.ppu
   */
 class Ppu {
   val pixelBuffer = new Array[Int](Ppu.ScreenWidth * Ppu.ScreenHeight)
+
+  def readRegister(address: Int): Int = {
+    0
+  }
 }
 
 object Ppu {

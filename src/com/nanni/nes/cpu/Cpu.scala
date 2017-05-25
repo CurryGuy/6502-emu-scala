@@ -1,6 +1,6 @@
 package com.nanni.nes.cpu
 
-import com.nanni.nes.Ram
+import com.nanni.nes.Memory
 import com.nanni.nes.Stack
 import com.nanni.nes.cpu.AddressingMode.AddressingMode
 import com.nanni.nes.cpu.CpuFlag.CpuFlag
@@ -9,7 +9,7 @@ import com.nanni.nes.cpu.InterruptType.InterruptType
 /**
   * Created by fcusumano on 5/8/17.
   */
-class Cpu(val mem: Ram, val stack: Stack) {
+class Cpu(val mem: Memory, val stack: Stack) {
   val instructions = new Instructions(this)
 
   val A  = Register(0, "A", 8)
@@ -32,14 +32,26 @@ class Cpu(val mem: Ram, val stack: Stack) {
     }
   }
 
+  def init(): Unit = {
+    _cycles = 0
+    A := 0
+    X := 0
+    Y := 0
+    P := 0xFD
+
+    PC := mem.readWord(0xFFFC)
+
+    triggerInterrupt(InterruptType.Reset)
+  }
+
   def reset(): Unit = {
     _cycles = 0
     A := 0
     X := 0
     Y := 0
-    P := 0x04
+    P := 0xFD
 
-    PC := 0
+    PC := 0x34
 
     triggerInterrupt(InterruptType.Reset)
   }
